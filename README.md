@@ -1,2 +1,2 @@
 # odin-etch-a-sketch
-Odin Etch-a-Dketch Project
+Odin Etch-a-Sketch Project
