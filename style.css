@@ -1,0 +1,89 @@
+/* 1. Styles for the entire page */
+@font-face {
+    font-family: "Zen Dots";
+    src: url("./fonts/ZenDots-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+*, 
+*::after, 
+*::before {   
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. On-screen title styling */
+.title {
+    font-optical-sizing: auto;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: cyan;
+    text-shadow: 4px 4px 10px darkblue;
+}
+
+/* 3. Style for the Body */
+body {
+    padding-top: 40px;
+    font-family: "Zen Dots", sans-serif;
+    background-image: url("img/cosmos.jpg");
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+
+/* 4. Uranus Icon */
+#planet {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    padding: 5px;
+}
+
+/* 5. Main Container - Box */
+.box {
+    background-color: transparent;
+    width: 840px;
+    height: 700px;
+    border-radius: 20px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 30px cyan;
+    border: 6px solid black;
+   
+}
+
+/* 6. Grid styling */
+.grid {
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    border: 6px solid black;
+    border-radius: 20px;
+}
+
+    /* Outline around each grid's pixel*/
+    .pixel {
+        outline: 1px solid lightyellow;
+    }
+
+    /* Turns rows into flexible containers */
+    /* So its children can grow or shrink */
+    .row {
+        flex: 1 1 auto;
+        display: flex;
+    }
+
+    /* Makes each column (pixel) inside a row flexible */
+    .col {
+        flex: 1 1 auto;
+    }
