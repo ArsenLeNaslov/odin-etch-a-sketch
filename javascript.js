@@ -12,6 +12,26 @@ function createGrid(numCubes) {
     }
 }
 
+// 2. State Variables: flags and colour variables for drawing modes
+const grid = document.querySelector('#grid');
+const shadeControl = document.querySelector('#shadeControl');
+const inputRes = document.querySelector('#inputRes');
+
+// 3. Initial Grid Creation and Event Listeners
+//    Create initial grid and set up main event listeners for drawing
+const xValRes = document.querySelector('#xValRes');
+const yValRes = document.querySelector('#yValRes');
+const controlKey = document.querySelector('#controlKey');
+const eraser = document.getElementById('eraser');
+const rainbowEffect = document.getElementById('rainbowEffect');
+const brightShading = document.getElementById('brightShading');
+
+// 4. Color Picker Change Handler: update pixel colour when Shade Picker's value changes
+let rainbowEffectFlag = false;
+let pixelColor = pickShade ? pickShade.value : '#000000';
+let brightShadingFlag = false;
+let previousPixelColor = '';
+
 // 12. Shade Picker pop-up window 
   document.addEventListener('DOMContentLoaded', function() {
         const gifColorPicker = document.getElementById('gifColorPicker');
