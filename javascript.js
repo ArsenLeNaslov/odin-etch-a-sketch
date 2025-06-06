@@ -32,6 +32,112 @@ let pixelColor = pickShade ? pickShade.value : '#000000';
 let brightShadingFlag = false;
 let previousPixelColor = '';
 
+// 5. Clear Button Handler: Clear all pixels in the Grid
+if (inputRes && grid) {
+    createGrid(inputRes.value);
+    let pixels = document.querySelectorAll('.col');
+    grid.addEventListener('mousedown', shadeOnMousedown);
+    pixels.forEach(pixel => {
+        pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+    });
+
+    pickShade && pickShade.addEventListener('input', e => {
+        pixelColor = pickShade.value;
+    });
+
+    clear && clear.addEventListener('click', (e) => {
+        const pixels = document.querySelectorAll('.col');
+        pixels.forEach(pixel => {
+            pixel.style.backgroundColor = '';
+            pixel.style.opacity = '';
+        });
+    });
+
+// 6. Resolution Input Handler: update grid size and 
+//    reapply event listeners when resolution changes
+   inputRes.addEventListener('input', (e) => {
+        grid.innerHTML = '';
+        xValRes.textContent = inputRes.value;
+        yValRes.textContent = inputRes.value;
+        createGrid(inputRes.value);
+        const pixels = document.querySelectorAll('.col');
+        if (eraser.textContent === 'Eraser') {
+            grid.addEventListener('mousedown', shadeOnMousedown);
+            grid.removeEventListener('mousedown', eraseOnMousedown);
+            pixels.forEach(pixel => {
+                pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+                pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+            });
+        } else {
+            grid.removeEventListener('mousedown', shadeOnMousedown);
+            grid.addEventListener('mousedown', eraseOnMousedown);
+            pixels.forEach(pixel => {
+                pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+                pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+            });
+        }
+    }); 
+
+//7. Eraser Toggle Handler: toggles between Eraser and Draw modes on 3rd Button
+eraser && eraser.addEventListener('click', e => {
+    const pixels = document.querySelectorAll('.col');
+    eraser.classList.toggle('active-control');
+    if (eraser.textContent === 'Eraser') {
+        eraser.textContent = 'Draw';
+        grid.removeEventListener('mousedown', shadeOnMousedown);
+        grid.addEventListener('mousedown', eraseOnMousedown);
+        grid.classList.add('cursor-crosshair');
+        pixels.forEach(pixel => {
+            pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+            pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+        });
+        } else {
+            eraser.textContent = 'Eraser';
+            grid.removeEventListener('mousedown', eraseOnMousedown);
+            grid.addEventListener('mousedown', shadeOnMousedown);
+            grid.classList.remove('cursor-crosshair');
+            pixels.forEach(pixel => {
+                pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+                pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+            });
+        }
+    });
+
+// 8. Rainbow Effect (Magic Color) Toggle Handler: toggle rainbow (random color) drawing mode
+   rainbowEffect && rainbowEffect.addEventListener('click', e => {
+        if (brightShadingFlag) {
+            brightShadingFlag = false;
+            brightShading.classList.remove('active-control');
+            brightShading.textContent = 'Bright Shading Off';
+        }
+        rainbowEffectFlag = !rainbowEffectFlag;
+        rainbowEffect.classList.toggle('active-control');
+        if (!rainbowEffectFlag) {
+            rainbowEffect.textContent = 'Rainbow Effect Off';
+            pixelColor = pickShade.value;
+        } else {
+            rainbowEffect.textContent = 'Rainbow Effect On';
+        }
+    });
+
+// 9. Bright Shading (Smooth Shade) Toggle Handler: toggle smooth shading mode
+    brightShading && brightShading.addEventListener('click', e => {
+        if (rainbowEffectFlag) {
+            rainbowEffectFlag = false;
+            rainbowEffect.classList.remove('active-control');
+            rainbowEffect.textContent = 'Rainbow Effect Off';
+            pixelColor = pickShade.value;
+        }
+        brightShadingFlag = !brightShadingFlag;
+        brightShading.classList.toggle('active-control');
+        if (brightShadingFlag) {
+            brightShading.textContent = 'Bright Shading On';
+        } else {
+            brightShading.textContent = 'Bright Shading Off';
+        }
+    });
+}
+
 // 12. Shade Picker pop-up window 
   document.addEventListener('DOMContentLoaded', function() {
         const gifColorPicker = document.getElementById('gifColorPicker');
