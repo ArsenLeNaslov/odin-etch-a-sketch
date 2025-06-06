@@ -266,6 +266,7 @@ button.active-control {
 footer {
   color: cyan;    
   position: absolute;
+  font-size: 14px;
   left: 0;  
   width: 100%;
   height: 10vh;
