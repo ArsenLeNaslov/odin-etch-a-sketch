@@ -53,7 +53,7 @@ if (inputRes && grid) {
         });
     });
 
-// 6. Resolution Input Handler: update grid size and 
+// 6. Input Resolution Handler: update grid size and 
 //    reapply event listeners when resolution changes
    inputRes.addEventListener('input', (e) => {
         grid.innerHTML = '';
@@ -103,7 +103,7 @@ eraser && eraser.addEventListener('click', e => {
         }
     });
 
-// 8. Rainbow Effect (Magic Color) Toggle Handler: toggle rainbow (random color) drawing mode
+// 8. Rainbow Effect Toggle Handler: toggles rainbow (random color) drawing mode
    rainbowEffect && rainbowEffect.addEventListener('click', e => {
         if (brightShadingFlag) {
             brightShadingFlag = false;
@@ -120,7 +120,7 @@ eraser && eraser.addEventListener('click', e => {
         }
     });
 
-// 9. Bright Shading (Smooth Shade) Toggle Handler: toggle smooth shading mode
+// 9. Bright Shading Toggle Handler: toggles light shading mode
     brightShading && brightShading.addEventListener('click', e => {
         if (rainbowEffectFlag) {
             rainbowEffectFlag = false;
@@ -136,6 +136,81 @@ eraser && eraser.addEventListener('click', e => {
             brightShading.textContent = 'Bright Shading Off';
         }
     });
+}
+
+// 10. Drawing & Erasing Event Handlers: functions for drawing, shading, and erasing pixels
+function shadeOnMousedown(e) {
+    if (e.button === 0) {
+        const pixelElem = e.target;
+        e.preventDefault();
+        if (rainbowEffectFlag) {
+            setRandomPixelColor();
+        } else if (brightShadingFlag) {
+            if (pixelElem.style.opacity === '') {
+                pixelElem.style.opacity = 0.1;
+            } else {
+                let opacity = +pixelElem.style.opacity;
+                if (opacity < 1) {
+                    opacity = opacity + 0.1;
+                    pixelElem.style.opacity = opacity;
+                }
+            }
+        }
+        setPixelFillColor(pixelElem, pixelColor);
+    }
+}
+
+function shadeOnHoverWithLeftButtonDown(e) {
+    if (e.buttons === 1) {
+        const pixelElem = e.target;
+        if (rainbowEffectFlag) {
+            setRandomPixelColor();
+        } else if (brightShadingFlag) {
+            if (pixelElem.style.opacity === '') {
+                pixelElem.style.opacity = 0.1;
+            } else {
+                let opacity = +pixelElem.style.opacity;
+                if (opacity < 1) {
+                    opacity = opacity + 0.1;
+                    pixelElem.style.opacity = opacity;
+                }
+            }
+        }
+        setPixelFillColor(pixelElem, pixelColor);
+    }
+}
+
+function eraseOnMousedown(e) {
+    if (e.button === 0) e.preventDefault();
+    erasePixel(e.target);
+}
+
+function eraseOnHoverWithLeftButtonDown(e) {
+    if (e.buttons === 1) {
+        erasePixel(e.target);
+    }
+}
+
+function erasePixel(pixelElem) {
+    pixelElem.style.backgroundColor = '';
+    pixelElem.style.opacity = '';
+}
+
+// 11. Pixel Color & Random Color Functions: helper functions 
+//     to set pixel color and generate random colors
+function setPixelFillColor(pixelElem, fillColor) {
+    pixelElem.style.backgroundColor = fillColor;
+}
+
+function setPixelFillColor(pixelElem, fillColor) {
+    pixelElem.style.backgroundColor = fillColor;
+}
+
+function setRandomPixelColor() {
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+    pixelColor = `rgb(${r}, ${g}, ${b})`;
 }
 
 // 12. Shade Picker pop-up window 
