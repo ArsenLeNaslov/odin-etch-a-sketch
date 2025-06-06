@@ -1,5 +1,6 @@
 # odin-etch-a-sketch
-Odin Etch a Sketch - L'Écran Magique
+"Odin Etch a Sketch - L'Écran Magique"
+
 An interactive Etch-a-Sketch web simulation built with HTML, CSS e JAvaScript. Draw, erase, and experiment with shades and effects on a customisable grid, all with a cosmic theme and background music.
 
 # Features
