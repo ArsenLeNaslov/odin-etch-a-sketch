@@ -13,7 +13,7 @@ An interactive Etch-a-Sketch web simulation built with HTML, CSS e JAvaScript. D
 - Live Resolution Slider Display to see the current grid resolution (e.g., 64 x 64) update as you move the thumb slider.
 - Animated UI Elements animated for colour picking and planet theme.
 - Background Ambient Cosmic Music plays in the background, with a toggle button to mute/unmute.
-- Responsive Design, designed primarily for desktop use, but can be used on mobile browsers as well.
+- Responsive Design, designed primarily for desktop use, but can be used on mobile browsers as well,although mouse clicks might not be registered. 
 - Attribution and Credits for all icons, music, and backgrounds are properly credited in the footer.
 
 ![image](https://github.com/user-attachments/assets/b5dc52dc-49ea-44b1-917b-2e54ca1d3895)
