@@ -36,9 +36,9 @@ let previousPixelColor = '';
 if (inputRes && grid) {
     createGrid(inputRes.value);
     let pixels = document.querySelectorAll('.col');
-    grid.addEventListener('mousedown', shadeOnMousedown);
+    grid.addEventListener('mousedown', shadowMousedown);
     pixels.forEach(pixel => {
-        pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+        pixel.addEventListener('mouseenter', shadowHoverDraw);
     });
 
     pickShade && pickShade.addEventListener('input', e => {
@@ -62,18 +62,18 @@ if (inputRes && grid) {
         createGrid(inputRes.value);
         const pixels = document.querySelectorAll('.col');
         if (eraser.textContent === 'Eraser') {
-            grid.addEventListener('mousedown', shadeOnMousedown);
-            grid.removeEventListener('mousedown', eraseOnMousedown);
+            grid.addEventListener('mousedown', shadowMousedown);
+            grid.removeEventListener('mousedown', eraserMousedown);
             pixels.forEach(pixel => {
-                pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
-                pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+                pixel.addEventListener('mouseenter', shadowHoverDraw);
+                pixel.removeEventListener('mouseenter', eraserHoverDraw);
             });
         } else {
-            grid.removeEventListener('mousedown', shadeOnMousedown);
-            grid.addEventListener('mousedown', eraseOnMousedown);
+            grid.removeEventListener('mousedown', shadowMousedown);
+            grid.addEventListener('mousedown', eraserMousedown);
             pixels.forEach(pixel => {
-                pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
-                pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+                pixel.removeEventListener('mouseenter', shadowHoverDraw);
+                pixel.addEventListener('mouseenter', eraserHoverDraw);
             });
         }
     }); 
@@ -84,21 +84,21 @@ eraser && eraser.addEventListener('click', e => {
     eraser.classList.toggle('active-control');
     if (eraser.textContent === 'Eraser') {
         eraser.textContent = 'Draw';
-        grid.removeEventListener('mousedown', shadeOnMousedown);
-        grid.addEventListener('mousedown', eraseOnMousedown);
+        grid.removeEventListener('mousedown', shadowMousedown);
+        grid.addEventListener('mousedown', eraserMousedown);
         grid.classList.add('cursor-crosshair');
         pixels.forEach(pixel => {
-            pixel.removeEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
-            pixel.addEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
+            pixel.removeEventListener('mouseenter', shadowHoverDraw);
+            pixel.addEventListener('mouseenter', eraserHoverDraw);
         });
         } else {
             eraser.textContent = 'Eraser';
-            grid.removeEventListener('mousedown', eraseOnMousedown);
-            grid.addEventListener('mousedown', shadeOnMousedown);
+            grid.removeEventListener('mousedown', eraserMousedown);
+            grid.addEventListener('mousedown', shadowMousedown);
             grid.classList.remove('cursor-crosshair');
             pixels.forEach(pixel => {
-                pixel.removeEventListener('mouseenter', eraseOnHoverWithLeftButtonDown);
-                pixel.addEventListener('mouseenter', shadeOnHoverWithLeftButtonDown);
+                pixel.removeEventListener('mouseenter', eraserHoverDraw);
+                pixel.addEventListener('mouseenter', shadowHoverDraw);
             });
         }
     });
@@ -139,12 +139,12 @@ eraser && eraser.addEventListener('click', e => {
 }
 
 // 10. Drawing & Erasing Event Handlers: functions for drawing, shading, and erasing pixels
-function shadeOnMousedown(e) {
+function shadowMousedown(e) {
     if (e.button === 0) {
         const pixelElem = e.target;
         e.preventDefault();
         if (rainbowEffectFlag) {
-            setRandomPixelColor();
+            selectRandomPColor();
         } else if (brightShadingFlag) {
             if (pixelElem.style.opacity === '') {
                 pixelElem.style.opacity = 0.1;
@@ -156,15 +156,15 @@ function shadeOnMousedown(e) {
                 }
             }
         }
-        setPixelFillColor(pixelElem, pixelColor);
+        selectPixelColor(pixelElem, pixelColor);
     }
 }
 
-function shadeOnHoverWithLeftButtonDown(e) {
+function shadowHoverDraw(e) {
     if (e.buttons === 1) {
         const pixelElem = e.target;
         if (rainbowEffectFlag) {
-            setRandomPixelColor();
+            selectRandomPColor();
         } else if (brightShadingFlag) {
             if (pixelElem.style.opacity === '') {
                 pixelElem.style.opacity = 0.1;
@@ -176,37 +176,37 @@ function shadeOnHoverWithLeftButtonDown(e) {
                 }
             }
         }
-        setPixelFillColor(pixelElem, pixelColor);
+        selectPixelColor(pixelElem, pixelColor);
     }
 }
 
-function eraseOnMousedown(e) {
+function eraserMousedown(e) {
     if (e.button === 0) e.preventDefault();
-    erasePixel(e.target);
+    eraserPixel(e.target);
 }
 
-function eraseOnHoverWithLeftButtonDown(e) {
+function eraserHoverDraw(e) {
     if (e.buttons === 1) {
-        erasePixel(e.target);
+        eraserPixel(e.target);
     }
 }
 
-function erasePixel(pixelElem) {
+function eraserPixel(pixelElem) {
     pixelElem.style.backgroundColor = '';
     pixelElem.style.opacity = '';
 }
 
 // 11. Pixel Color & Random Color Functions: helper functions 
 //     to set pixel color and generate random colors
-function setPixelFillColor(pixelElem, fillColor) {
+function selectPixelColor(pixelElem, fillColor) {
     pixelElem.style.backgroundColor = fillColor;
 }
 
-function setPixelFillColor(pixelElem, fillColor) {
+function selectPixelColor(pixelElem, fillColor) {
     pixelElem.style.backgroundColor = fillColor;
 }
 
-function setRandomPixelColor() {
+function selectRandomPColor() {
     let r = Math.floor(Math.random() * 256);
     let g = Math.floor(Math.random() * 256);
     let b = Math.floor(Math.random() * 256);
