@@ -1,7 +1,7 @@
 # odin-etch-a-sketch
 "Odin Etch a Sketch - L'Écran Magique"
 
-An interactive Etch-a-Sketch web simulation built with HTML, CSS e JAvaScript. Draw, erase, and experiment with shades and effects on a customisable grid, all with a cosmic theme and background music.
+An interactive Etch-a-Sketch web simulation built with HTML, CSS e JavaScript of André Cassagnes's famous game. Using a mouse or mouse pad, draw, erase, and experiment with shades and effects on a customisable grid, all with a cosmic theme and background music.
 
 # Features
 - Resizable Grid size (1x1 up to 100x100) with a slider for pixel-perfect control.
