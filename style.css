@@ -34,7 +34,10 @@ body {
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: auto;
+    min-width: 320px;
+    min-height: 100vh;
 }
 
 /* 4. Uranus Icon */
@@ -57,7 +60,9 @@ body {
     align-items: center;
     box-shadow: 0 0 30px cyan;
     border: 10px solid black;
-   
+    max-width: 98vw;
+    max-height: 90vh;
+    overflow: auto;
 }
 
 /* 6. Grid styling */
@@ -313,7 +318,28 @@ a:active {
 
 /* 16. Ensures elements adjust based on screen width :*/
 @media (max-width: 900px) {
-
+    body {
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+    .box {
+        width: 98vw;
+        height: auto;
+        min-width: 320px;
+        min-height: 60vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        overflow: auto;
+    }
+    .grid {
+        width: 98vw;
+        height: 60vw;
+        min-width: 200px;
+        min-height: 200px;
+        max-width: 100vw;
+        max-height: 80vh;
+        overflow: auto;
+    }
     footer {
         position: relative;
         bottom: 0;
