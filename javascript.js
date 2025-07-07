@@ -37,8 +37,10 @@ if (inputRes && grid) {
     createGrid(inputRes.value);
     let pixels = document.querySelectorAll('.col');
     grid.addEventListener('mousedown', shadowMousedown);
+    grid.addEventListener('touchstart', shadowTouchStart, { passive: false });
     pixels.forEach(pixel => {
         pixel.addEventListener('mouseenter', shadowHoverDraw);
+        pixel.addEventListener('touchmove', shadowTouchMove, { passive: false });
     });
 
     pickShade && pickShade.addEventListener('input', e => {
@@ -61,19 +63,28 @@ if (inputRes && grid) {
         yValRes.textContent = inputRes.value;
         createGrid(inputRes.value);
         const pixels = document.querySelectorAll('.col');
+        // Mouse events
         if (eraser.textContent === 'Eraser') {
             grid.addEventListener('mousedown', shadowMousedown);
             grid.removeEventListener('mousedown', eraserMousedown);
+            grid.addEventListener('touchstart', shadowTouchStart, { passive: false });
+            grid.removeEventListener('touchstart', eraserTouchStart);
             pixels.forEach(pixel => {
                 pixel.addEventListener('mouseenter', shadowHoverDraw);
                 pixel.removeEventListener('mouseenter', eraserHoverDraw);
+                pixel.addEventListener('touchmove', shadowTouchMove, { passive: false });
+                pixel.removeEventListener('touchmove', eraserTouchMove);
             });
         } else {
             grid.removeEventListener('mousedown', shadowMousedown);
             grid.addEventListener('mousedown', eraserMousedown);
+            grid.removeEventListener('touchstart', shadowTouchStart);
+            grid.addEventListener('touchstart', eraserTouchStart, { passive: false });
             pixels.forEach(pixel => {
                 pixel.removeEventListener('mouseenter', shadowHoverDraw);
                 pixel.addEventListener('mouseenter', eraserHoverDraw);
+                pixel.removeEventListener('touchmove', shadowTouchMove);
+                pixel.addEventListener('touchmove', eraserTouchMove, { passive: false });
             });
         }
     }); 
@@ -86,22 +97,90 @@ eraser && eraser.addEventListener('click', e => {
         eraser.textContent = 'Draw';
         grid.removeEventListener('mousedown', shadowMousedown);
         grid.addEventListener('mousedown', eraserMousedown);
+        grid.removeEventListener('touchstart', shadowTouchStart);
+        grid.addEventListener('touchstart', eraserTouchStart, { passive: false });
         grid.classList.add('cursor-crosshair');
         pixels.forEach(pixel => {
             pixel.removeEventListener('mouseenter', shadowHoverDraw);
             pixel.addEventListener('mouseenter', eraserHoverDraw);
+            pixel.removeEventListener('touchmove', shadowTouchMove);
+            pixel.addEventListener('touchmove', eraserTouchMove, { passive: false });
         });
+    } else {
+        eraser.textContent = 'Eraser';
+        grid.removeEventListener('mousedown', eraserMousedown);
+        grid.addEventListener('mousedown', shadowMousedown);
+        grid.removeEventListener('touchstart', eraserTouchStart);
+        grid.addEventListener('touchstart', shadowTouchStart, { passive: false });
+        grid.classList.remove('cursor-crosshair');
+        pixels.forEach(pixel => {
+            pixel.removeEventListener('mouseenter', eraserHoverDraw);
+            pixel.addEventListener('mouseenter', shadowHoverDraw);
+            pixel.removeEventListener('touchmove', eraserTouchMove);
+            pixel.addEventListener('touchmove', shadowTouchMove, { passive: false });
+        });
+    }
+});
+// --- Touch event handlers for mobile/tablet/touchscreen support ---
+function getTouchPixelElem(e) {
+    // Get the element under the touch point
+    let touch = e.touches[0] || e.changedTouches[0];
+    return document.elementFromPoint(touch.clientX, touch.clientY);
+}
+
+function shadowTouchStart(e) {
+    e.preventDefault();
+    let pixelElem = getTouchPixelElem(e);
+    if (!pixelElem || !pixelElem.classList.contains('col')) return;
+    if (rainbowEffectFlag) {
+        selectRandomPColor();
+    } else if (brightShadingFlag) {
+        if (pixelElem.style.opacity === '') {
+            pixelElem.style.opacity = 0.1;
         } else {
-            eraser.textContent = 'Eraser';
-            grid.removeEventListener('mousedown', eraserMousedown);
-            grid.addEventListener('mousedown', shadowMousedown);
-            grid.classList.remove('cursor-crosshair');
-            pixels.forEach(pixel => {
-                pixel.removeEventListener('mouseenter', eraserHoverDraw);
-                pixel.addEventListener('mouseenter', shadowHoverDraw);
-            });
+            let opacity = +pixelElem.style.opacity;
+            if (opacity < 1) {
+                opacity = opacity + 0.1;
+                pixelElem.style.opacity = opacity;
+            }
         }
-    });
+    }
+    selectPixelColor(pixelElem, pixelColor);
+}
+
+function shadowTouchMove(e) {
+    e.preventDefault();
+    let pixelElem = getTouchPixelElem(e);
+    if (!pixelElem || !pixelElem.classList.contains('col')) return;
+    if (rainbowEffectFlag) {
+        selectRandomPColor();
+    } else if (brightShadingFlag) {
+        if (pixelElem.style.opacity === '') {
+            pixelElem.style.opacity = 0.1;
+        } else {
+            let opacity = +pixelElem.style.opacity;
+            if (opacity < 1) {
+                opacity = opacity + 0.1;
+                pixelElem.style.opacity = opacity;
+            }
+        }
+    }
+    selectPixelColor(pixelElem, pixelColor);
+}
+
+function eraserTouchStart(e) {
+    e.preventDefault();
+    let pixelElem = getTouchPixelElem(e);
+    if (!pixelElem || !pixelElem.classList.contains('col')) return;
+    eraserPixel(pixelElem);
+}
+
+function eraserTouchMove(e) {
+    e.preventDefault();
+    let pixelElem = getTouchPixelElem(e);
+    if (!pixelElem || !pixelElem.classList.contains('col')) return;
+    eraserPixel(pixelElem);
+}
 
 // 8. Rainbow Effect Toggle Handler: toggles rainbow (random color) drawing mode
    rainbowEffect && rainbowEffect.addEventListener('click', e => {
